@@ -22,7 +22,7 @@ export default function RootLayout({
         <SessionProvider>
           <Header />
           <main className="flex-grow container mx-auto my-12">{children}</main>
-          <footer className="bg-slate-800 text-white p-4 text-center">
+          <footer className="bg-primary text-primary-foreground p-4 text-center">
             Copyright
           </footer>
         </SessionProvider>

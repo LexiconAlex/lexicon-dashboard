@@ -1,17 +1,14 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import { PrismaClient } from "@prisma/client";
+import { PostList } from "@/components/Post";
+
+const prisma = new PrismaClient();
 
 export default async function Home() {
-  const session = await auth();
-
-  if (session?.user) {
-    redirect("/dashboard");
-  }
-
+  const Post = await prisma.post.findMany();
   return (
-    <div className="text-center">
+    <div className="text-center text-primary">
       <h1 className="text-3xl font-bold mb-4">Lexicon Dashboard</h1>
-      <p>Please login to use the dashboard</p>
+      <PostList Post={Post} />
     </div>
   );
 }

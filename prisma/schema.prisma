@@ -28,6 +28,12 @@ enum Role {
   ADMIN
 }
 
+model Post {
+  id    String @id @default(cuid())
+  title String
+  body  String
+}
+
 model Account {
   userId            String
   type              String

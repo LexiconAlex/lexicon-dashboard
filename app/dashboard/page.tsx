@@ -24,7 +24,7 @@ export default async function Dashboard() {
   const isAdmin = session.user.role === "ADMIN";
 
   return (
-    <div className="text-center">
+    <div>
       <h1 className="2xl font-bold mb-4">Lexicon Dashboard</h1>
       <UserTable users={users} isAdmin={isAdmin} />
     </div>

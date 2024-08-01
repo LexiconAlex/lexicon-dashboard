@@ -1,6 +1,24 @@
 import { updateUserRole } from "@/app/actions/updateUserRole";
 import { Role } from "@prisma/client";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "./ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 type User = {
   id: string;
   name: string | null;
@@ -15,45 +33,40 @@ interface UserTableProps {
 
 export default function UserTable({ users, isAdmin }: UserTableProps) {
   return (
-    <table className="w-full border-collapse">
-      <thead>
-        <tr>
-          <th className="border p-2">Name</th>
-          <th className="border p-2">Email</th>
-          <th className="border p-2">Role</th>
-          {isAdmin && <th className="border p-2">Action</th>}
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableCaption>Userlist</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead className="text-right">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {users.map((user) => (
-          <tr key={user.id}>
-            <td className="border p-2">{user.name}</td>
-            <td className="border p-2">{user.email}</td>
-            <td className="border p-2">{user.role}</td>
-            {isAdmin && (
-              <td className="border p-2">
-                <form action={updateUserRole}>
-                  <input type="hidden" name="userId" value={user.id} />
-                  <select
-                    name="newRole"
-                    defaultValue={user.role}
-                    className="border p-1 mr-2"
-                  >
-                    <option value={Role.ADMIN}>Admin</option>
-                    <option value={Role.USER}>User</option>
-                  </select>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-2 py-1"
-                  >
-                    Change
-                  </button>
-                </form>
-              </td>
-            )}
-          </tr>
+          <TableRow key={user.id}>
+            <TableCell className="font-medium">{user.name}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.role}</TableCell>
+            <TableCell className="text-right">
+              <form action={updateUserRole}>
+                <Select name="newRole">
+                  <SelectTrigger>
+                    <SelectValue placeholder={user.role} />
+                    <SelectContent>
+                      <SelectItem value={Role.ADMIN}>{Role.ADMIN}</SelectItem>
+                      <SelectItem value={Role.USER}>{Role.USER}</SelectItem>
+                    </SelectContent>
+                  </SelectTrigger>
+                </Select>
+                <input type="hidden" name="userId" value={user.id} />
+                <Button type="submit">Change role</Button>
+              </form>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }
